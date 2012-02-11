@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<meta charset="utf-8">
+	<!-- © 2012 Sijmen Mulder.
+	     Licensed under the 3-clause BSD license, see License.md -->
+	<title>Event-registrar demo</title>
+	<script src="event-registrar.js"></script>
+	<script>
+
+(function() {
+	'use strict';
+
+	var Greeter = function() {
+		registerEvent(this, 'hello');
+		registerEvent(this, 'goodbye');
+	};
+
+	var greeter = new Greeter();
+
+	greeter.on('hello', function(subject) {
+		document.write('Hello to ' + subject + '<br>');
+	});
+
+	greeter.once('hello', function(subject) {
+		document.write('Indeed, very hello to ' + subject + '<br>');
+	});
+
+	function onGoodbye(preposition, subject) {
+		document.write('Goodbye ' + preposition + ' ' + subject + '<br>');
+	};
+
+	greeter.on('goodbye', onGoodbye);
+	greeter.emit('hello', 'you');
+	greeter.emit('hello', 'him');
+	greeter.emit('goodbye', 'to', 'you');
+	greeter.removeListener('goodbye', onGoodbye);
+	greeter.emit('goodbye', 'from', 'me');
+})();
+
+	</script>
+</html>
